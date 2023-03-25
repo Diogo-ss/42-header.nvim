@@ -12,18 +12,18 @@ This plugin is whole re-write of [42header](https://github.com/42Paris/42header)
 
 ### 📦 Packer.nvim
 ```lua
-use { "Diogo-ss/42-headers.nvim" }
+use { "Diogo-ss/42-header.nvim" }
 ```
 
 ### 💤 Lazy.nvim
 ```lua
-{ "Diogo-ss/42-headers.nvim" }
+{ "Diogo-ss/42-header.nvim" }
 ```
 
 ### 🔌 Vim-plug 
 ```lua
 call plug#begin()
-  Plug 'Diogo-ss/42-headers.nvim'
+  Plug 'Diogo-ss/42-header.nvim'
 call plug#end()
 ```
 
