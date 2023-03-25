@@ -35,8 +35,8 @@ call plug#end()
 ```lua
 local header = require("42header")
 header.setup({
-    default_map = true, -- Update header when saving
-    auto_update = true  -- Default Mapping <F1> in normal mode
+    default_map = true, -- Default Mapping <F1> in normal mode
+    auto_update = true  -- Update header when saving
 })
 ```
 
