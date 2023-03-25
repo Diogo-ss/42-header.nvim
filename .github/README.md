@@ -8,6 +8,10 @@ This plugin is whole re-write of [42header](https://github.com/42Paris/42header)
 - Auto Update (optional)
 - 34 langs support by default
 
+## Showcase
+
+![header](https://github.com/Diogo-ss/42-header.nvim/blob/main/.github/header_img.png)
+
 ## 🎈 Setup
 
 ### 📦 Packer.nvim
