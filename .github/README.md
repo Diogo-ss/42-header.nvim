@@ -3,6 +3,7 @@
 This plugin is whole re-write of [42header](https://github.com/42Paris/42header) in Lua.
 
 ## ✨ Features
+- Command: `Stdheader`
 - Customizable options
 - Modulate
 - Auto Update (optional)
