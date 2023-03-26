@@ -7,7 +7,7 @@ This plugin is whole re-write of [42header](https://github.com/42Paris/42header)
 - Customizable options
 - Modulate
 - Auto Update (optional)
-- Support many [file types](https://github.com/Diogo-ss/42-header.nvim/blob/main/lua/core/types.lua) support by default
+- Support many [file types](https://github.com/Diogo-ss/42-header.nvim/blob/main/lua/core/types.lua) by default
 
 ## 🚀 Showcase
 
