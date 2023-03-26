@@ -6,7 +6,7 @@ This plugin is whole re-write of [42header](https://github.com/42Paris/42header)
 - Command: `Stdheader`
 - Customizable options
 - Modulate
-- Auto update on save(optional)
+- Auto update on save (optional)
 - Support many [file types](https://github.com/Diogo-ss/42-header.nvim/blob/main/lua/core/types.lua) by default
 
 ## 🚀 Showcase
