@@ -38,6 +38,8 @@ local header = require("42header")
 header.setup({
     default_map = true, -- Default Mapping <F1> in normal mode
     auto_update = true  -- Update header when saving
+    user = "Diogo-ss", -- Your user
+    mail = "contact@diogosilva.dev", -- Your mail
 })
 ```
 
