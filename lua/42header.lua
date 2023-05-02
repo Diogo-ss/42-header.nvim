@@ -12,7 +12,9 @@ local margin = 5
 
 M.opts = {
     default_map = true,
-    auto_update = true
+    auto_update = true,
+    user = "Diogo-ss",
+    mail = "contact@diogosilva.dev",
 }
 
 function M.setup(options)
@@ -38,25 +40,11 @@ function M.setup(options)
 end
 
 local function get_user()
-    local user = vim.g.user
-    if not user then
-        user = vim.fn.expand("$USER")
-    end
-    if not user or user == "$USER" then
-        user = "Diogo-ss"
-    end
-    return user
+    return vim.g.user or M.opts.user
 end
 
 local function get_mail()
-    local mail = vim.g.mail
-    if not mail then
-        mail = vim.fn.expand("$MAIL")
-    end
-    if not mail or mail == "$MAIL"then
-        mail = "diogo-ss@mail.com"
-    end
-    return mail
+    return vim.g.mail or M.opts.mail
 end
 
 local function filetype()
