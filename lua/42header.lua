@@ -16,13 +16,7 @@ M.opts = {
 }
 
 function M.setup(options)
-    if options.default_map == false then
-        M.opts.default_map = false
-    end
-
-    if options.auto_update == false then
-        M.opts.auto_update = false
-    end
+    M.opts = vim.tbl_extend("force", M.opts, options or {})
 
     local custom = vim.api.nvim_create_augroup('custom_header_group', {})
 
@@ -41,7 +35,6 @@ function M.setup(options)
     if M.opts.default_map == true then
         vim.keymap.set("n", "<F1>", ":Stdheader<CR>", { silent = true, noremap = true })
     end
-
 end
 
 local function get_user()
