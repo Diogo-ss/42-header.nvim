@@ -44,19 +44,12 @@ header.setup({
 ```
 
 ## 🌐 User and Mail
-Priority Order: First global variables and then environmental variables.
-
-#### `USER` and `MAIL` can be defined in two ways:
-
-**Option 1:** Set `USER` and `MAIL` values directly in your `init.lua`:
+`user` and `mail` can be defined using global variables.
 ```lua
 vim.g.user = "Diogo-ss"
-vim.g.mail = "diogo-ss@mail.com"
+vim.g.mail = "contact@diogosilva.dev"
 ```
-
-**Option 2:** Export `USER` and `MAIL` in your environment variables:
-- `USER`
-- `MAIL`
+- global variables have higher priority than setup values
 
 ## 🍦 Credits
 Lua version by [Diogo-ss](https://github.com/Diogo-ss)
