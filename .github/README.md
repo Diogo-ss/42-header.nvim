@@ -24,6 +24,21 @@ use { "Diogo-ss/42-header.nvim" }
 ```lua
 { "Diogo-ss/42-header.nvim" }
 ```
+```lua
+return {
+    "Diogo-ss/42-header.nvim",
+    lazy = false,
+    config = function()
+        local header = require("42header")
+        header.setup({
+            default_map = true, -- Default Mapping <F1> in normal mode
+            auto_update = true,  -- Update header when saving
+            user = "Diogo-ss", -- Your user
+            mail = "contact@diogosilva.dev", -- Your mail
+        })
+    end
+}
+```
 
 ### 🔌 Vim-plug 
 ```lua
