@@ -54,7 +54,7 @@ local function get_mail()
 end
 
 local function filetype()
-  local f = vim.fn.expand("%:e")
+  local f = vim.fn.expand "%:e"
   local values = types[f] or { "#", "#", "*" }
   start, _end, fill = values[1], values[2], values[3]
 end
