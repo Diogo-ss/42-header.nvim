@@ -31,10 +31,10 @@ return {
     config = function()
         local header = require("42header")
         header.setup({
-            default_map = true, -- Default Mapping <F1> in normal mode
-            auto_update = true,  -- Update header when saving
-            user = "Diogo-ss", -- Your user
-            mail = "contact@diogosilva.dev", -- Your mail
+            default_map = true, -- default Mapping <F1> in normal mode
+            auto_update = true,  -- update header when saving
+            user = "Diogo-ss", -- your user
+            mail = "contact@diogosilva.dev", -- your mail
         })
     end
 }
@@ -51,10 +51,13 @@ call plug#end()
 ```lua
 local header = require("42header")
 header.setup({
-    default_map = true, -- Default Mapping <F1> in normal mode
-    auto_update = true,  -- Update header when saving
-    user = "Diogo-ss", -- Your user
-    mail = "contact@diogosilva.dev", -- Your mail
+  length = 80, -- headers of different sizes are incompatible with each other
+  margin = 5,
+  default_map = true, -- default Mapping <F1> in normal mode
+  auto_update = true, -- update header when saving
+  user = "Diogo-ss", -- your user
+  mail = "contact@diogosilva.dev", -- your mail
+  -- asciiart = { "......", "......",} -- headers with different ascii arts are incompatible with each other
 })
 ```
 
@@ -64,7 +67,7 @@ header.setup({
 vim.g.user = "Diogo-ss"
 vim.g.mail = "contact@diogosilva.dev"
 ```
-- global variables have higher priority than setup values
+> **_NOTE:_** global variables have higher priority than setup values
 
 ## 🍦 Credits
 Lua version by [Diogo-ss](https://github.com/Diogo-ss)
@@ -75,4 +78,5 @@ Original VimScript version:
 [alexandregv](https://github.com/alexandregv) - contributor  
 [mjacq42](https://github.com/mjacq42) - contributor  
 [sungmcho](https://github.com/lordtomi0325) - contributor  
+
 
