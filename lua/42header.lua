@@ -35,7 +35,10 @@ function M.setup(options)
       nested = true,
       group = custom,
       callback = function()
-        M.stdheader_auto()
+        M.filetype()
+        if M.has_header() then
+          M.update_header()
+        end
       end,
     })
   end
@@ -53,7 +56,7 @@ local function get_mail()
   return vim.g.mail or M.opts.mail
 end
 
-local function filetype()
+function M.filetype()
   local f = vim.fn.expand "%:e"
   local values = types[f] or { "#", "#", "*" }
   start, _end, fill = values[1], values[2], values[3]
@@ -93,7 +96,7 @@ local function line(n)
   end
 end
 
-local function has_header()
+function M.has_header()
   local header = {}
   for i = 1, 3 do
     table.insert(header, line(i))
@@ -107,7 +110,7 @@ local function has_header()
   return true
 end
 
-local function insert_header()
+function M.insert_header()
   local header = {}
   for i = 1, 11 do
     table.insert(header, line(i))
@@ -116,7 +119,7 @@ local function insert_header()
   vim.api.nvim_buf_set_lines(0, 0, 0, false, header)
 end
 
-local function update_header()
+function M.update_header()
   local header = {}
   for i = 1, 11 do
     if i ~= 8 then
@@ -129,18 +132,11 @@ local function update_header()
 end
 
 function M.stdheader()
-  filetype()
-  if not has_header() then
-    insert_header()
+  M.filetype()
+  if not M.has_header() then
+    M.insert_header()
   else
-    update_header()
-  end
-end
-
-function M.stdheader_auto()
-  filetype()
-  if has_header() then
-    update_header()
+    M.update_header()
   end
 end
 
