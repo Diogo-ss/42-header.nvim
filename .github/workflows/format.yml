@@ -28,7 +28,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git
           git add .
-          git diff --quiet && git diff --staged --quiet || (git commit -a -m "style: format lua files [action]"; git push origin HEAD:${GITHUB_REF})
+          git diff --quiet && git diff --staged --quiet || (git commit -a -m "style: format Lua files [action]"; git push origin HEAD:${GITHUB_REF})
           
   release:
     runs-on: ubuntu-latest
