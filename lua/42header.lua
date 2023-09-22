@@ -1,4 +1,3 @@
-local types = require "core.types"
 local M = {}
 
 M.opts = {
