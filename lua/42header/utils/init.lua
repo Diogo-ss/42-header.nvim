@@ -19,7 +19,7 @@ end
 --- Get symbols (e.g., comment characters) for a specified file type.
 -- @param filetype The file type for which symbols are retrieved.
 -- @return Symbols for the specified file type.
-M.get_symbols = function(filetype)
+function M.get_symbols(filetype)
   for langs, value in pairs(config.opts.types) do
     for _, lang in pairs(langs) do
       if lang == filetype then
@@ -44,17 +44,17 @@ end
 -- @param right The right part of the header line.
 -- @return The formatted header line.
 function M.textline(left, right)
-  local start, _, _end = M.get_symbols(vim.bo.filetype)
+  local start, _, _end = M.get_symbols(vim.fn.expand "%:e")
 
   left = string.sub(left, 1, config.opts.length - config.opts.margin * 2 - string.len(right))
 
   return start
-      .. string.rep(" ", config.opts.margin - string.len(start))
-      .. left
-      .. string.rep(" ", config.opts.length - config.opts.margin * 2 - string.len(left) - string.len(right))
-      .. right
-      .. string.rep(" ", config.opts.margin - string.len(_end))
-      .. _end
+    .. string.rep(" ", config.opts.margin - string.len(start))
+    .. left
+    .. string.rep(" ", config.opts.length - config.opts.margin * 2 - string.len(left) - string.len(right))
+    .. right
+    .. string.rep(" ", config.opts.margin - string.len(_end))
+    .. _end
 end
 
 --- Generate a specific line of the header based on the line number.
@@ -62,14 +62,14 @@ end
 -- @param n The line number for which to generate the header line.
 -- @return A formatted header line based on the line number `n`.
 function M.line(n)
-  local start, fill, _end = M.get_symbols(vim.bo.filetype)
+  local start, fill, _end = M.get_symbols(vim.fn.expand "%:e")
 
   if n == 1 or n == 11 then
     return start
-        .. " "
-        .. string.rep(fill, config.opts.length - string.len(start) - string.len(_end) - 2)
-        .. " "
-        .. _end
+      .. " "
+      .. string.rep(fill, config.opts.length - string.len(start) - string.len(_end) - 2)
+      .. " "
+      .. _end
   elseif n == 2 or n == 10 then
     return M.textline("", "")
   elseif n == 3 or n == 5 or n == 7 then
