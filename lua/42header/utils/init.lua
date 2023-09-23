@@ -114,9 +114,8 @@ end
 --- Insert a header into the current buffer.
 -- @param header The header to insert.
 function M.insert_header(header)
-  -- It checks if the first line of the buffer is empty.
+  -- If the first line is not empty, the blank line will be added after the header.
   if vim.api.nvim_buf_get_lines(0, 0, 1, false)[1] ~= "" then
-    -- If the first line is not empty, the blank line will be added after the header.
     table.insert(header, "")
   end
 
@@ -126,7 +125,6 @@ end
 --- Update an existing header in the current buffer.
 -- @param header The updated header to replace the existing one.
 function M.update_header(header)
-  -- Lines to preserve from the existing header.
   local immutable = { 8 }
 
   -- Copies immutable lines from existing header to updated header.
