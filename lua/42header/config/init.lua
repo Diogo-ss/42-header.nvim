@@ -20,7 +20,26 @@ M.opts = {
   user = "username",
   mail = "your@mail.com",
   types = {
-    [{ "c", "cc", "cpp", "cxx", "tpp", "glsl", "h", "hh", "hxx", "hpp", "cs", "d", "php", "css", "sql", "swift", "kt", "kts" }] = {
+    [{
+      "c",
+      "cc",
+      "cpp",
+      "cxx",
+      "tpp",
+      "glsl",
+      "h",
+      "hh",
+      "hxx",
+      "hpp",
+      "cs",
+      "d",
+      "php",
+      "css",
+      "sql",
+      "swift",
+      "kt",
+      "kts",
+    }] = {
       "/*",
       "*",
       "*/",
