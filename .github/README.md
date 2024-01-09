@@ -7,11 +7,11 @@ This plugin is whole re-write of [42header](https://github.com/42Paris/42header)
 - Customizable options
 - Modulate
 - Auto update on save (optional)
-- Support many [file types](https://github.com/Diogo-ss/42-header.nvim/blob/main/lua/core/types.lua) by default
+- Support many [file types](https://github.com/Diogo-ss/42-header.nvim/blob/main/lua/42header/config/init.lua) by default
 
 ## 🚀 Showcase
 
-![header](https://github.com/Diogo-ss/42-header.nvim/blob/main/.github/header_img.png)
+![header](https://raw.githubusercontent.com/Diogo-ss/42-header.nvim/7528c7ff25c51bf32301dfc1ece995128d2ae7d5/.github/header_img.png)
 
 ## 🎈 Setup
 
@@ -25,7 +25,7 @@ use { "Diogo-ss/42-header.nvim" }
 { "Diogo-ss/42-header.nvim" }
 ```
 ```lua
-return {
+{
     "Diogo-ss/42-header.nvim",
     lazy = false,
     config = function()
