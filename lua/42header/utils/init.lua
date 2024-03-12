@@ -125,7 +125,7 @@ end
 --- Update an existing header in the current buffer.
 -- @param header The updated header to replace the existing one.
 function M.update_header(header)
-  local immutable = { 8 }
+  local immutable = { 6, 8 }
 
   -- Copies immutable lines from existing header to updated header.
   for _, value in ipairs(immutable) do
