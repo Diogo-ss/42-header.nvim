@@ -1,0 +1,44 @@
+name: ci
+on:
+  push:
+    paths-ignore:
+      - ".github/**"
+      - ".stylua.toml"
+      - ".gitignore"
+    branches:
+      - main
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: create luacheck config
+        run: echo 'globals = { "vim" }' > .luacheckrc
+
+      - name: luacheck
+        uses: lunarmodules/luacheck@v1
+        with:
+          args: .
+
+      - name: stylua check
+        uses: johnnymorganz/stylua-action@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          version: latest
+          args: --color always --check lua/
+
+  release:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs: check
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: create release
+        uses: google-github-actions/release-please-action@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          release-type: simple
