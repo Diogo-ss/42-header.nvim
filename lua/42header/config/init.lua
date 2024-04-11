@@ -17,7 +17,7 @@ M.opts = {
     "    ###   ########.fr    ",
   },
   git = {
-    enabled = true,
+    enabled = false,
     bin = "git",
     user_global = true,
     email_global = true,
