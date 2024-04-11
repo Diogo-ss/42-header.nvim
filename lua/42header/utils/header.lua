@@ -101,6 +101,10 @@ end
 ---Insert a header into the current buffer.
 ---@param header table: The header to insert.
 function M.insert_header(header)
+  if not vim.api.nvim_buf_get_option(0, "modifiable") then
+    vim.notify("The current buffer cannot be modified.", vim.log.levels.WARN, { title = "42 Header" })
+    return
+  end
   -- If the first line is not empty, the blank line will be added after the header.
   if vim.api.nvim_buf_get_lines(0, 0, 1, false)[1] ~= "" then
     table.insert(header, "")
@@ -124,11 +128,6 @@ end
 
 ---Inserts or updates the header in the current buffer.
 function M.stdheader()
-  if not vim.api.nvim_buf_get_option(0, "modifiable") then
-    vim.notify("The current buffer cannot be modified.", vim.log.levels.WARN, { title = "42 Header" })
-    return
-  end
-
   local header = M.gen_header()
   if not M.has_header(header) then
     M.insert_header(header)
