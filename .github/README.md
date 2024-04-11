@@ -5,10 +5,9 @@ This plugin is whole re-write of [42header](https://github.com/42Paris/42header)
 ## ✨ Features
 
 - Command: `Stdheader`
-- Customizable options
-- Modulate
 - Auto update on save (optional)
-- Support many [file types](https://github.com/Diogo-ss/42-header.nvim/blob/main/lua/42header/config/init.lua) by default
+- Supports `commentstring`
+- Supports Git
 
 ## 🚀 Showcase
 
@@ -29,7 +28,7 @@ use {
       auto_update = true, -- Update header when saving.
       user = "username", -- Your user.
       mail = "your@email.com", -- Your mail.
-    -- add other options
+    -- add other options.
     }
   end,
 }
@@ -51,7 +50,7 @@ return {
     auto_update = true, -- Update header when saving.
     user = "username", -- Your user.
     mail = "your@email.com", -- Your mail.
-    -- add other options
+    -- add other options.
   },
   config = function(_, opts)
     require("42header").setup(opts)
@@ -65,29 +64,29 @@ return {
 
 ```lua
 {
-  --- Max header size (not recommended change).
-  length = 80,
-  --- Header margin (not recommended change).
-  margin = 5,
-  --- Activate default mapping (e.g. F1).
+  ---Max header size (not recommended change).
+  --length = 80,
+  ---Header margin (not recommended change).
+  --margin = 5,
+  ---Activate default mapping (e.g. F1).
   default_map = true,
-  --- Enable auto-update of headers.
+  ---Enable auto-update of headers.
   auto_update = true,
-  --- Default user name.
+  ---Default user.name.
   user = "username",
-  --- Default user email.
+  ---Default user.email.
   mail = "your@mail.com",
-  --- ASCII art.
-  --- asciiart = { "---", "---", ... },
-  --- Git config.
+  ---ASCII art.
+  --asciiart = { "---", "---", ... },
+  ---Git config.
   git = {
-    --- Enable Git support.
+    ---Enable Git support.
     enabled = false,
-    --- PATH to the Git binary.
+    ---PATH to the Git binary.
     bin = "git",
-    --- Use global user.name, otherwise use local user.name.
+    ---Use global user.name, otherwise use local user.name.
     user_global = true,
-    --- Use global user.email, otherwise use local user.email,
+    ---Use global user.email, otherwise use local user.email.
     email_global = true,
   },
 }
@@ -102,8 +101,4 @@ vim.g.user = "username"
 vim.g.mail = "your@mail.com"
 ```
 
-> **_NOTE:_** The order of priority: global variables > git variables (if support enabled) > user config.
-
-## 🍦 Credits
-
-VimScript version: [42header](https://github.com/42Paris/42header)
+> **_NOTE:_** The order of priority: `global variables` > `git config (if support enabled)` > `user config`.

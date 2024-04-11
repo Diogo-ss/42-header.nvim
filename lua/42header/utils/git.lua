@@ -23,14 +23,14 @@ function M.cmd(...)
   return output
 end
 
----Get user.name
+---Get user.name.
 ---@return string|nil
 function M.user()
   local flag = config.opts.git.user_global and "--global" or "--local"
   return M.cmd { "config", flag, "user.name" }
 end
 
----Get user.email
+---Get user.email.
 ---@return string|nil
 function M.email()
   local flag = config.opts.git.user_global and "--global" or "--local"

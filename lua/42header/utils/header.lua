@@ -10,24 +10,24 @@ local M = {}
 local config = require "42header.config"
 local git = require "42header.utils.git"
 
----Get the user name.
+---Get username.
 ---@return string|nil
 function M.user()
   return vim.g.user or (config.opts.git.enabled and git.user()) or config.opts.user
 end
 
----Get the user mail.
+---Get email.
 ---@return string|nil
 function M.email()
   return vim.g.mail or (config.opts.git.enabled and git.email()) or config.opts.mail
 end
 
----Get left and right comment symbols from the buffer
+---Get left and right comment symbols from the buffer.
 ---@return string, string
 function M.comment_symbols()
   local str = vim.api.nvim_buf_get_option(0, "commentstring")
 
-  --- Checks the buffer has a valid commentstring
+  -- Checks the buffer has a valid commentstring.
   if str:find "%%s" then
     local left, right = str:match "(.*)%%s(.*)"
 
@@ -38,7 +38,7 @@ function M.comment_symbols()
     return vim.trim(left), vim.trim(right)
   end
 
-  return "#", "#" -- Default comment symbols
+  return "#", "#" -- Default comment symbols.
 end
 
 ---Generate a formatted text line for the header.
@@ -88,7 +88,7 @@ end
 function M.has_header(header)
   local lines = vim.api.nvim_buf_get_lines(0, 0, 11, false)
 
-  -- immutable lines that are used for checking
+  -- Immutable lines that are used for checking.
   for _, v in pairs { 1, 2, 3, 10, 11 } do
     if header[v] ~= lines[v] then
       return false
@@ -114,7 +114,7 @@ function M.insert_header(header)
 end
 
 ---Update an existing header in the current buffer.
----@param header table: Header to override the current one
+---@param header table: Header to override the current one.
 function M.update_header(header)
   local immutable = { 6, 8 }
 
