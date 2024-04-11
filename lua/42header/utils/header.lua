@@ -17,73 +17,57 @@ function M.email()
   return vim.g.mail or (config.opts.git.enabled and git.email()) or config.opts.mail
 end
 
---- Get symbols (e.g., comment characters) for a specified file type.
--- @param filetype The file type for which symbols are retrieved.
--- @return Symbols for the specified file type.
-function M.get_symbols(filetype)
-  for langs, value in pairs(config.opts.types) do
-    for _, lang in pairs(langs) do
-      if lang == filetype then
-        return unpack(value)
-      end
+function M.comment_symbols()
+  local str = vim.api.nvim_buf_get_option(0, "commentstring")
+
+  if str:find "%%s" then
+    local left, right = str:match "(.*)%%s(.*)"
+
+    if right == "" then
+      right = left
     end
+
+    return vim.trim(left), vim.trim(right)
   end
 
-  return "#", "*", "#"
+  return "#", "#"
 end
 
---- Get an ASCII art element based on an index.
--- @param n The index of the ASCII art element to retrieve.
--- @return The ASCII art element.
-function M.ascii(n)
-  -- Subtracts 2 from `n` to adjust for the margin of two additional lines at the top of the header.
-  return config.opts.asciiart[n - 2]
+function M.gen_line(text, ascii)
+  local max_length = config.opts.length - config.opts.margin * 2 - #ascii
+
+  text = (text):sub(1, max_length)
+
+  local left, right = M.comment_symbols()
+  local left_margin = (" "):rep(config.opts.margin - #left)
+  local right_margin = (" "):rep(config.opts.margin - #right)
+  local spaces = (" "):rep(max_length - #text)
+
+  return left .. left_margin .. text .. spaces .. ascii .. right_margin .. right
 end
 
---- Create a formatted text line for the header.
--- @param left The left part of the header line.
--- @param right The right part of the header line.
--- @return The formatted header line.
-function M.textline(left, right)
-  local start, _, _end = M.get_symbols(vim.fn.expand "%:e")
+--- Generate a complete header.
+-- @return A table containing all lines of the generated header.
+function M.gen_header()
+  local ascii = config.opts.asciiart
+  local left, right = M.comment_symbols()
+  local fill_line = left .. " " .. string.rep("*", config.opts.length - #left - #right - 2) .. " " .. right
+  local empty_line = M.gen_line("", "")
+  local date = os.date "%Y/%m/%d %H:%M:%S"
 
-  left = string.sub(left, 1, config.opts.length - config.opts.margin * 2 - string.len(right))
-
-  return start
-    .. string.rep(" ", config.opts.margin - string.len(start))
-    .. left
-    .. string.rep(" ", config.opts.length - config.opts.margin * 2 - string.len(left) - string.len(right))
-    .. right
-    .. string.rep(" ", config.opts.margin - string.len(_end))
-    .. _end
-end
-
---- Generate a specific line of the header based on the line number.
--- This function constructs a header line based on the provided line number `n` in the header.
--- @param n The line number for which to generate the header line.
--- @return A formatted header line based on the line number `n`.
-function M.line(n)
-  local start, fill, _end = M.get_symbols(vim.fn.expand "%:e")
-
-  if n == 1 or n == 11 then
-    return start
-      .. " "
-      .. string.rep(fill, config.opts.length - string.len(start) - string.len(_end) - 2)
-      .. " "
-      .. _end
-  elseif n == 2 or n == 10 then
-    return M.textline("", "")
-  elseif n == 3 or n == 5 or n == 7 then
-    return M.textline("", M.ascii(n))
-  elseif n == 4 then
-    return M.textline(vim.fn.expand "%:t", M.ascii(n))
-  elseif n == 6 then
-    return M.textline("By: " .. M.user() .. " <" .. M.email() .. ">", M.ascii(n))
-  elseif n == 8 then
-    return M.textline("Created: " .. os.date "%Y/%m/%d %H:%M:%S" .. " by " .. M.user(), M.ascii(n))
-  elseif n == 9 then
-    return M.textline("Updated: " .. os.date "%Y/%m/%d %H:%M:%S" .. " by " .. M.user(), M.ascii(n))
-  end
+  return {
+    fill_line,
+    empty_line,
+    M.gen_line("", ascii[1]),
+    M.gen_line(vim.fn.expand "%:t", ascii[2]),
+    M.gen_line("", ascii[3]),
+    M.gen_line("By: " .. M.user() .. " <" .. M.email() .. ">", ascii[4]),
+    M.gen_line("", ascii[5]),
+    M.gen_line("Created: " .. date .. " by " .. M.user(), ascii[6]),
+    M.gen_line("Updated: " .. date .. " by " .. M.user(), ascii[7]),
+    empty_line,
+    fill_line,
+  }
 end
 
 --- Check if a header already exists in the current buffer.
@@ -100,16 +84,6 @@ function M.has_header(header)
   end
 
   return true
-end
-
---- Generate a complete header.
--- @return A table containing all lines of the generated header.
-function M.gen_header()
-  local header = {}
-  for i = 1, 11 do
-    table.insert(header, M.line(i))
-  end
-  return header
 end
 
 --- Insert a header into the current buffer.
