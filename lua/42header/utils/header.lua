@@ -1,25 +1,33 @@
---- Module for managing and generating header comments in code files.
--- generate ASCII art, create formatted header lines, check for the existence of a header,
--- generate a complete header, insert or update headers.
+---@tag 42header.header
+
+---@brief [[
+---
+---This module manages the header.
+---
+---@brief ]]
+
 local M = {}
 local config = require "42header.config"
 local git = require "42header.utils.git"
 
---- Get the user name.
--- @return The global user name or configuration.
+---Get the user name.
+---@return string|nil
 function M.user()
   return vim.g.user or (config.opts.git.enabled and git.user()) or config.opts.user
 end
 
---- Get the user mail.
--- @return The global user mail or configuration.
+---Get the user mail.
+---@return string|nil
 function M.email()
   return vim.g.mail or (config.opts.git.enabled and git.email()) or config.opts.mail
 end
 
+---Get left and right comment symbols from the buffer
+---@return string, string
 function M.comment_symbols()
   local str = vim.api.nvim_buf_get_option(0, "commentstring")
 
+  --- Checks the buffer has a valid commentstring
   if str:find "%%s" then
     local left, right = str:match "(.*)%%s(.*)"
 
@@ -30,9 +38,13 @@ function M.comment_symbols()
     return vim.trim(left), vim.trim(right)
   end
 
-  return "#", "#"
+  return "#", "#" -- Default comment symbols
 end
 
+---Generate a formatted text line for the header.
+---@param text string: The text to include in the line.
+---@param ascii string: The ASCII art for the line.
+---@return string: The formatted header line.
 function M.gen_line(text, ascii)
   local max_length = config.opts.length - config.opts.margin * 2 - #ascii
 
@@ -46,8 +58,8 @@ function M.gen_line(text, ascii)
   return left .. left_margin .. text .. spaces .. ascii .. right_margin .. right
 end
 
---- Generate a complete header.
--- @return A table containing all lines of the generated header.
+---Generate a complete header.
+---@return table: A table ontaining all lines of header.
 function M.gen_header()
   local ascii = config.opts.asciiart
   local left, right = M.comment_symbols()
@@ -70,9 +82,9 @@ function M.gen_header()
   }
 end
 
---- Check if a header already exists in the current buffer.
--- @param header The header to compare against the existing buffer content.
--- @return `true` if the header exists, `false` otherwise.
+---Checks if there is a valid header in the current buffer.
+---@param header table: The header to compare with the contents of the existing buffer.
+---@return boolean: `true` if the header exists, `false` otherwise.
 function M.has_header(header)
   local lines = vim.api.nvim_buf_get_lines(0, 0, 11, false)
 
@@ -86,8 +98,8 @@ function M.has_header(header)
   return true
 end
 
---- Insert a header into the current buffer.
--- @param header The header to insert.
+---Insert a header into the current buffer.
+---@param header table: The header to insert.
 function M.insert_header(header)
   -- If the first line is not empty, the blank line will be added after the header.
   if vim.api.nvim_buf_get_lines(0, 0, 1, false)[1] ~= "" then
@@ -97,8 +109,8 @@ function M.insert_header(header)
   vim.api.nvim_buf_set_lines(0, 0, 0, false, header)
 end
 
---- Update an existing header in the current buffer.
--- @param header The updated header to replace the existing one.
+---Update an existing header in the current buffer.
+---@param header table: Header to override the current one
 function M.update_header(header)
   local immutable = { 6, 8 }
 
@@ -110,9 +122,13 @@ function M.update_header(header)
   vim.api.nvim_buf_set_lines(0, 0, 11, false, header)
 end
 
---- Standardize the header in the current buffer.
--- Inserts or updates the header based on its presence.
+---Inserts or updates the header in the current buffer.
 function M.stdheader()
+  if not vim.api.nvim_buf_get_option(0, "modifiable") then
+    vim.notify("The current buffer cannot be modified.", vim.log.levels.WARN, { title = "42 Header" })
+    return
+  end
+
   local header = M.gen_header()
   if not M.has_header(header) then
     M.insert_header(header)

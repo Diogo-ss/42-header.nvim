@@ -3,10 +3,10 @@ local utils = require "42header.utils.header"
 
 local M = {}
 
-function M.setup(options)
+function M.setup(opts)
   local custom = vim.api.nvim_create_augroup("custom_header_group", {})
 
-  config.set(vim.tbl_extend("force", config.opts, options or {}))
+  config.set(opts)
   vim.api.nvim_create_user_command("Stdheader", utils.stdheader, {})
 
   if config.opts.auto_update == true then

@@ -1,24 +1,19 @@
---- Module for managing configuration options for the 42header plugin.
--- This module defines default configuration options and allows users to set custom options.
 local M = {}
 
---- Default configuration options for the 42header plugin.
--- Users can customize these options by setting their own values.
--- @field length (number) The maximum line length for the header.
--- @field margin (number) The margin size.
--- @field default_map (boolean) Whether to enable the default key mapping.
--- @field auto_update (boolean) Whether to enable automatic header updates on file save.
--- @field types (table) A table mapping file extensions to their corresponding comment symbols.
---   - Each entry consists of a table of file extensions and a table of comment symbols.
---   - The comment symbols include the start, fill, and end symbols.
--- @field asciiart (table) A table containing ASCII art lines for the header decoration.
 M.opts = {
+  --- Max header size (not recommended change).
   length = 80,
+  --- Header margin (not recommended change).
   margin = 5,
+  --- Activate default mapping (e.g. F1).
   default_map = true,
+  --- Enable auto-update of headers.
   auto_update = true,
+  --- Default user name.
   user = "username",
+  --- Default user email.
   mail = "your@mail.com",
+  --- ASCII art.
   asciiart = {
     "        :::      ::::::::",
     "      :+:      :+:    :+:",
@@ -28,18 +23,23 @@ M.opts = {
     "     #+#    #+#          ",
     "    ###   ########.fr    ",
   },
+  --- Git config.
   git = {
-    bin = "git",
+    --- Enable Git support.
     enabled = true,
-    email_global = true,
+    --- PATH to the Git binary.
+    bin = "git",
+    --- Use global user.name, otherwise use local user.name.
     user_global = true,
+    --- Use global user.email, otherwise use local user.email,
+    email_global = true,
   },
 }
 
---- Set custom configuration options.
--- @param opts (table) A table of custom configuration options to override the defaults.
+---Applies the user options to the default table.
+---@param opts table: settings
 M.set = function(opts)
-  M.opts = opts
+  M.opts = vim.tbl_deep_extend("force", M.opts, opts or {})
 end
 
 return M
