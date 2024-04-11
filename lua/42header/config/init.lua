@@ -68,6 +68,12 @@ M.opts = {
     "     #+#    #+#          ",
     "    ###   ########.fr    ",
   },
+  git = {
+    bin = "git",
+    enabled = false,
+    email_global = true,
+    user_global = true,
+  },
 }
 
 --- Set custom configuration options.
