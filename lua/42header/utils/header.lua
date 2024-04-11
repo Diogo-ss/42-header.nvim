@@ -3,17 +3,18 @@
 -- generate a complete header, insert or update headers.
 local M = {}
 local config = require "42header.config"
+local git = require "42header.utils.git"
 
 --- Get the user name.
 -- @return The global user name or configuration.
-function M.get_user()
-  return vim.g.user or config.opts.user
+function M.user()
+  return vim.g.user or (config.opts.git.enabled and git.user()) or config.opts.user
 end
 
 --- Get the user mail.
 -- @return The global user mail or configuration.
-function M.get_mail()
-  return vim.g.mail or config.opts.mail
+function M.email()
+  return vim.g.mail or (config.opts.git.enabled and git.email()) or config.opts.mail
 end
 
 --- Get symbols (e.g., comment characters) for a specified file type.
@@ -77,11 +78,11 @@ function M.line(n)
   elseif n == 4 then
     return M.textline(vim.fn.expand "%:t", M.ascii(n))
   elseif n == 6 then
-    return M.textline("By: " .. M.get_user() .. " <" .. M.get_mail() .. ">", M.ascii(n))
+    return M.textline("By: " .. M.user() .. " <" .. M.email() .. ">", M.ascii(n))
   elseif n == 8 then
-    return M.textline("Created: " .. os.date "%Y/%m/%d %H:%M:%S" .. " by " .. M.get_user(), M.ascii(n))
+    return M.textline("Created: " .. os.date "%Y/%m/%d %H:%M:%S" .. " by " .. M.user(), M.ascii(n))
   elseif n == 9 then
-    return M.textline("Updated: " .. os.date "%Y/%m/%d %H:%M:%S" .. " by " .. M.get_user(), M.ascii(n))
+    return M.textline("Updated: " .. os.date "%Y/%m/%d %H:%M:%S" .. " by " .. M.user(), M.ascii(n))
   end
 end
 

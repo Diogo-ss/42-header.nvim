@@ -1,6 +1,7 @@
-local M = {}
 local config = require "42header.config"
-local utils = require "42header.utils"
+local utils = require "42header.utils.header"
+
+local M = {}
 
 function M.setup(options)
   local custom = vim.api.nvim_create_augroup("custom_header_group", {})
