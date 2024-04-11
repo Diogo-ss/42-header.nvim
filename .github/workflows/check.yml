@@ -1,0 +1,34 @@
+name: check
+
+on:
+  push:
+    branches-ignore:
+      - main
+    paths:
+      - "lua/**/*.lua"
+  pull_request:
+    paths:
+      - "lua/**/*.lua"
+  workflow_call:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create Luacheck config
+        run: echo 'globals = { "vim" }' > .luacheckrc
+
+      - name: Luacheck
+        uses: lunarmodules/luacheck@v1
+        with:
+          args: .
+
+      - name: Stylua check
+        uses: JohnnyMorganz/stylua-action@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          version: latest
+          args: --color always --check lua/
