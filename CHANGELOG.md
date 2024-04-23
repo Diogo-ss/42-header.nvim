@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/Diogo-ss/42-header.nvim/compare/v2.0.0...v2.1.0) (2024-04-23)
+
+
+### Features
+
+* **git:** add support for includes in git config ([3770560](https://github.com/Diogo-ss/42-header.nvim/commit/37705600f4b818de798746953ad272618be7e95c))
+
 ## [2.0.0](https://github.com/Diogo-ss/42-header.nvim/compare/v1.1.0...v2.0.0) (2024-04-11)
 
 
