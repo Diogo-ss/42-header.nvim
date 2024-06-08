@@ -33,7 +33,7 @@ end
 ---Get user.email.
 ---@return string|nil
 function M.email()
-  local flag = config.opts.git.user_global and "--global" or "--local"
+  local flag = config.opts.git.email_global and "--global" or "--local"
   return M.cmd { "config", flag, "--includes", "user.email" }
 end
 
