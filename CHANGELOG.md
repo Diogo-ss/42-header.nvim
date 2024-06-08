@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/Diogo-ss/42-header.nvim/compare/v2.1.0...v2.1.1) (2024-06-08)
+
+
+### Bug Fixes
+
+* use user_global value in email ([3e483dc](https://github.com/Diogo-ss/42-header.nvim/commit/3e483dc24ba6828ab0ef1d6b14b519135d9b856f))
+
 ## [2.1.0](https://github.com/Diogo-ss/42-header.nvim/compare/v2.0.0...v2.1.0) (2024-04-23)
 
 
