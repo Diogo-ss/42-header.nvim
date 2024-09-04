@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.2](https://github.com/Diogo-ss/42-header.nvim/compare/v2.1.1...v2.1.2) (2024-09-04)
+
+
+### Bug Fixes
+
+* bad commentstring ([29bdf78](https://github.com/Diogo-ss/42-header.nvim/commit/29bdf780d2b3293d1597ae558e2039c63fc5e4e6))
+
 ## [2.1.1](https://github.com/Diogo-ss/42-header.nvim/compare/v2.1.0...v2.1.1) (2024-06-08)
 
 
