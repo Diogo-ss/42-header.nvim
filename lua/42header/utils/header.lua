@@ -27,6 +27,10 @@ end
 function M.comment_symbols()
   local str = vim.api.nvim_buf_get_option(0, "commentstring")
 
+  if vim.tbl_contains({ "c", "cc", "cpp", "cxx", "tpp" }, vim.bo.filetype) then
+    str = "/* %s */"
+  end
+
   -- Checks the buffer has a valid commentstring.
   if str:find "%%s" then
     local left, right = str:match "(.*)%%s(.*)"
