@@ -29,6 +29,8 @@ function M.comment_symbols()
 
   if vim.tbl_contains({ "c", "cc", "cpp", "cxx", "tpp" }, vim.bo.filetype) then
     str = "/* %s */"
+  elseif vim.bo.filetype == "openscad" then
+    str = "// %s #"
   end
 
   -- Checks the buffer has a valid commentstring.
