@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/Diogo-ss/42-header.nvim/compare/v2.1.2...v2.2.0) (2025-04-08)
+
+
+### Features
+
+* add support for the OpenSCAD file type ([a70fd8e](https://github.com/Diogo-ss/42-header.nvim/commit/a70fd8e9959cbeaa6166f3a9bc9f654399fae8b9))
+
 ## [2.1.2](https://github.com/Diogo-ss/42-header.nvim/compare/v2.1.1...v2.1.2) (2024-09-04)
 
 
