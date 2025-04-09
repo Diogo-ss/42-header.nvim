@@ -25,12 +25,10 @@ end
 ---Get left and right comment symbols from the buffer.
 ---@return string, string
 function M.comment_symbols()
-  local str = vim.api.nvim_buf_get_option(0, "commentstring")
+  local str = vim.api.nvim_get_option_value("commentstring", { buf = 0 })
 
   if vim.tbl_contains({ "c", "cc", "cpp", "cxx", "tpp" }, vim.bo.filetype) then
     str = "/* %s */"
-  elseif vim.bo.filetype == "openscad" then
-    str = "// %s #"
   end
 
   -- Checks the buffer has a valid commentstring.
@@ -64,6 +62,12 @@ function M.gen_line(text, ascii)
   return left .. left_margin .. text .. spaces .. ascii .. right_margin .. right
 end
 
+---Checks if there is a shebang line in the current buffer.
+---@return boolean: `true` if the shebang line exists, `false` otherwise.
+local function has_shebang()
+  return vim.fn.getline(1):match "^#!" ~= nil
+end
+
 ---Generate a complete header.
 ---@return table: A table ontaining all lines of header.
 function M.gen_header()
@@ -73,31 +77,55 @@ function M.gen_header()
   local empty_line = M.gen_line("", "")
   local date = os.date "%Y/%m/%d %H:%M:%S"
 
-  return {
-    fill_line,
-    empty_line,
-    M.gen_line("", ascii[1]),
-    M.gen_line(vim.fn.expand "%:t", ascii[2]),
-    M.gen_line("", ascii[3]),
-    M.gen_line("By: " .. M.user() .. " <" .. M.email() .. ">", ascii[4]),
-    M.gen_line("", ascii[5]),
-    M.gen_line("Created: " .. date .. " by " .. M.user(), ascii[6]),
-    M.gen_line("Updated: " .. date .. " by " .. M.user(), ascii[7]),
-    empty_line,
-    fill_line,
-  }
+  if has_shebang() then
+    return {
+      fill_line,
+      M.gen_line(vim.fn.expand "%:t", ascii[1]),
+      M.gen_line("By: " .. M.user() .. " <" .. M.email() .. ">", ascii[2]),
+      M.gen_line("", ascii[3]),
+      M.gen_line("Created: " .. date .. " by " .. M.user(), ascii[4]),
+      M.gen_line("Updated: " .. date .. " by " .. M.user(), ascii[5]),
+      M.gen_line("", ascii[6]),
+      M.gen_line("Comments:", ascii[7]),
+      empty_line,
+      fill_line,
+    }
+  else
+    return {
+      fill_line,
+      empty_line,
+      M.gen_line(vim.fn.expand "%:t", ascii[1]),
+      M.gen_line("By: " .. M.user() .. " <" .. M.email() .. ">", ascii[2]),
+      M.gen_line("", ascii[3]),
+      M.gen_line("Created: " .. date .. " by " .. M.user(), ascii[4]),
+      M.gen_line("Updated: " .. date .. " by " .. M.user(), ascii[5]),
+      M.gen_line("", ascii[6]),
+      M.gen_line("Comments:", ascii[7]),
+      empty_line,
+      fill_line,
+    }
+  end
 end
 
 ---Checks if there is a valid header in the current buffer.
 ---@param header table: The header to compare with the contents of the existing buffer.
 ---@return boolean: `true` if the header exists, `false` otherwise.
 function M.has_header(header)
-  local lines = vim.api.nvim_buf_get_lines(0, 0, 11, false)
-
-  -- Immutable lines that are used for checking.
-  for _, v in pairs { 1, 2, 3, 10, 11 } do
-    if header[v] ~= lines[v] then
-      return false
+  if has_shebang() then
+    local lines = vim.api.nvim_buf_get_lines(0, 1, 11, false)
+    -- Immutable lines that are used for checking.
+    for _, v in pairs { 1, 4, 7, 10 } do
+      if header[v] ~= lines[v] then
+        return false
+      end
+    end
+  else
+    local lines = vim.api.nvim_buf_get_lines(0, 0, 11, false)
+    -- Immutable lines that are used for checking.
+    for _, v in pairs { 1, 2, 5, 8, 11 } do
+      if header[v] ~= lines[v] then
+        return false
+      end
     end
   end
 
@@ -107,29 +135,45 @@ end
 ---Insert a header into the current buffer.
 ---@param header table: The header to insert.
 function M.insert_header(header)
-  if not vim.api.nvim_buf_get_option(0, "modifiable") then
+  if not vim.api.nvim_get_option_value("modifiable", { buf = 0 }) then
     vim.notify("The current buffer cannot be modified.", vim.log.levels.WARN, { title = "42 Header" })
     return
   end
-  -- If the first line is not empty, the blank line will be added after the header.
-  if vim.api.nvim_buf_get_lines(0, 0, 1, false)[1] ~= "" then
-    table.insert(header, "")
-  end
+  if has_shebang() then
+    -- If the second line is not empty, the blank line will be added after the header.
+    if vim.api.nvim_buf_get_lines(0, 1, 2, false)[1] ~= "" then
+      table.insert(header, "")
+    end
 
-  vim.api.nvim_buf_set_lines(0, 0, 0, false, header)
+    vim.api.nvim_buf_set_lines(0, 1, 1, false, header)
+  else
+    -- If the first line is not empty, the blank line will be added after the header.
+    if vim.api.nvim_buf_get_lines(0, 0, 1, false)[1] ~= "" then
+      table.insert(header, "")
+    end
+
+    vim.api.nvim_buf_set_lines(0, 0, 0, false, header)
+  end
 end
 
 ---Update an existing header in the current buffer.
 ---@param header table: Header to override the current one.
 function M.update_header(header)
-  local immutable = { 6, 8 }
-
-  -- Copies immutable lines from existing header to updated header.
-  for _, value in ipairs(immutable) do
-    header[value] = vim.api.nvim_buf_get_lines(0, value - 1, value, false)[1]
+  if has_shebang() then
+    local immutable = { 4, 6, 9 }
+    -- Copies immutable lines from existing header to updated header.
+    for _, value in ipairs(immutable) do
+      header[value - 1] = vim.api.nvim_buf_get_lines(0, value - 1, value, false)[1]
+    end
+    vim.api.nvim_buf_set_lines(0, 1, 11, false, header)
+  else
+    local immutable = { 4, 6, 9 }
+    -- Copies immutable lines from existing header to updated header.
+    for _, value in ipairs(immutable) do
+      header[value] = vim.api.nvim_buf_get_lines(0, value - 1, value, false)[1]
+    end
+    vim.api.nvim_buf_set_lines(0, 0, 11, false, header)
   end
-
-  vim.api.nvim_buf_set_lines(0, 0, 11, false, header)
 end
 
 ---Inserts or updates the header in the current buffer.
