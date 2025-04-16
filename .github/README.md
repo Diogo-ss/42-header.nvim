@@ -23,7 +23,7 @@ use {
   "Diogo-ss/42-header.nvim",
   cmd = { "Stdheader" },
   config = function()
-    require "42header"setup {
+    require("42header").setup {
       default_map = true, -- Default mapping <F1> in normal mode.
       auto_update = true, -- Update header when saving.
       user = "username", -- Your user.
