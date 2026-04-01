@@ -100,4 +100,11 @@ vim.g.user = "username"
 vim.g.mail = "your@mail.com"
 ```
 
-> **_NOTE:_** The order of priority: `global variables` > `git config (if support enabled)` > `user config`.
+or environment variables
+
+```bash
+export USER='username'
+export MAIL='your@mail.com'
+```
+
+> **_NOTE:_** The order of priority: `global variables` > `environment variables` > `git config (if support enabled)` > `user config`.
