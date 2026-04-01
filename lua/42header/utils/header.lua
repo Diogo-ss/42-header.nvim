@@ -13,13 +13,13 @@ local git = require "42header.utils.git"
 ---Get username.
 ---@return string|nil
 function M.user()
-  return vim.g.user or (config.opts.git.enabled and git.user()) or config.opts.user
+  return vim.g.user or os.getenv("USER") or (config.opts.git.enabled and git.user()) or config.opts.user
 end
 
 ---Get email.
 ---@return string|nil
 function M.email()
-  return vim.g.mail or (config.opts.git.enabled and git.email()) or config.opts.mail
+  return vim.g.mail or os.getenv("MAIL") or (config.opts.git.enabled and git.email()) or config.opts.mail
 end
 
 ---Get left and right comment symbols from the buffer.
@@ -65,7 +65,7 @@ function M.gen_line(text, ascii)
 end
 
 ---Generate a complete header.
----@return table: A table ontaining all lines of header.
+---@return table: A table containing all lines of header.
 function M.gen_header()
   local ascii = config.opts.asciiart
   local left, right = M.comment_symbols()
