@@ -13,13 +13,13 @@ local git = require "42header.utils.git"
 ---Get username.
 ---@return string|nil
 function M.user()
-  return vim.g.user or os.getenv("USER") or (config.opts.git.enabled and git.user()) or config.opts.user
+  return config.opts.user or vim.g.user or os.getenv "USER" or (config.opts.git.enabled and git.user())
 end
 
 ---Get email.
 ---@return string|nil
 function M.email()
-  return vim.g.mail or os.getenv("MAIL") or (config.opts.git.enabled and git.email()) or config.opts.mail
+  return config.opts.user or vim.g.mail or os.getenv "MAIL" or (config.opts.git.enabled and git.email())
 end
 
 ---Get left and right comment symbols from the buffer.

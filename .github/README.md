@@ -93,7 +93,16 @@ use {
 
 ## 🌐 User and Mail
 
-`user` and `mail` can be defined using global variables.
+`user` and `mail` can be defined using config options
+
+```lua
+opts = {
+    user = "username"
+    mail = "your@mail.com"
+}
+```
+
+or global variables.
 
 ```lua
 vim.g.user = "username"
